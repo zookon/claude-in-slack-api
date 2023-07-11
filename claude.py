@@ -7,9 +7,23 @@ from fastapi.responses import StreamingResponse
 from sse_starlette.sse import EventSourceResponse
 
 from slack import client
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+# 添加 CORS 中间件
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 允许所有来源
+    allow_credentials=True,
+    allow_methods=["*"],  # 允许所有方法
+    allow_headers=["*"],  # 允许所有头部
+)
+
 server_token = getenv("SERVER_TOKEN")
+
+
 
 
 async def must_token(x_token: Union[str, None] = Header(None)):
